@@ -19,6 +19,37 @@
                 SearchField;
             
             App = React.createClass({
+                componentDidMount() {
+                    this.search('https://swapi.co/api/people?format=json&search=luke');
+                },
+
+                getInitialState: function() {
+                    return {
+                        searchResults: []
+                    }
+                },
+
+                search: function(URL) {
+
+                    $.ajax({
+                        type: "GET",
+                        dataType: 'json',
+                        url: URL,
+                        success: function(response) {
+                            this.showResults(response);
+                        }.bind(this)
+
+                    })
+                },
+
+                showResults: function(response) {
+                    console.log(response.results);
+                    
+                    this.setState({
+                        searchResults: response.results
+                    })
+                },
+
                 render: function() {
                     return (
                         <div>
@@ -32,7 +63,7 @@
             SearchField = React.createClass({
                 render: function() {
                     return (
-                        <div class="search-field-wrapper">
+                        <div className="search-field-wrapper">
                             <input type="text" />
                         </div>
                     )
