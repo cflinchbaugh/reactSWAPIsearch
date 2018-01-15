@@ -1,7 +1,7 @@
 <!-- DOCTYPE HTML -->
 <html>
     <head>
-        <title>iTunes API</title>
+        <title>Star Wars API Search</title>
     </head>
     
     <body>
@@ -15,14 +15,27 @@
         <script src="https://fb.me/react-dom-0.14.6.js"></script>
         <script src="http://fb.me/JSXTransformer-0.12.1.js"></script>
         <script type="text/jsx">
-            var App = React.createClass({
-                render: function(){
+            var App,
+                SearchField;
+            
+            App = React.createClass({
+                render: function() {
                     return (
                         <div>
-                            Search Field Placeholder
+                            <SearchField />
                             Results Placeholder
                         </div>
                     );
+                }
+            });
+
+            SearchField = React.createClass({
+                render: function() {
+                    return (
+                        <div class="search-field-wrapper">
+                            <input type="text" />
+                        </div>
+                    )
                 }
             });
 
