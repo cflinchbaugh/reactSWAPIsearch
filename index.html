@@ -16,11 +16,13 @@
         <script src="http://fb.me/JSXTransformer-0.12.1.js"></script>
         <script type="text/jsx">
             var App,
-                SearchField;
+                SearchField,
+                ResultsListing,
+                ResultsItem;
             
             App = React.createClass({
                 componentDidMount() {
-                    this.search('https://swapi.co/api/people?format=json&search=luke');
+                    this.search('https://swapi.co/api/people?format=json&search=');
                 },
 
                 getInitialState: function() {
@@ -43,8 +45,6 @@
                 },
 
                 showResults: function(response) {
-                    console.log(response.results);
-                    
                     this.setState({
                         searchResults: response.results
                     })
@@ -54,7 +54,7 @@
                     return (
                         <div>
                             <SearchField />
-                            Results Placeholder
+                            <ResultsListing searchResults={this.state.searchResults}/>
                         </div>
                     );
                 }
@@ -67,6 +67,26 @@
                             <input type="text" />
                         </div>
                     )
+                }
+            });
+
+            ResultsListing = React.createClass({
+                render: function(){
+                    var resultItems = this.props.searchResults.map(function(result) {
+                        return <ResultItem key={result.url} name={result.name} />
+                    });
+
+                    return(
+                        <ul>
+                           {resultItems}
+                        </ul>           
+                    );
+                }
+            });
+
+            ResultItem = React.createClass({
+                render: function(){
+                    return <li>{this.props.name}</li>;
                 }
             });
 
