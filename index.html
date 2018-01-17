@@ -27,11 +27,16 @@
 
                 getInitialState: function() {
                     return {
-                        searchResults: []
+                        searchResults: [],
+                        loading: false
                     }
                 },
 
                 search: function(URL) {
+                    this.setState({
+                        loading: true
+                    });
+
                     $.ajax({
                         type: "GET",
                         dataType: 'json',
@@ -40,22 +45,39 @@
                             this.showResults(response);
                         }.bind(this)
 
-                    })
+                    });
                 },
 
                 showResults: function(response) {
                     this.setState({
+                        loading: false,
                         searchResults: response.results
-                    })
+                    });
                 },
 
                 render: function() {
-                    return (
+                    const { loading } = this.state;
+                    let renderedMarkup;
+
+                    if (loading) {
+                        renderedMarkup = this.buildLoadingStateMarkup();
+                    } else {
+                        renderedMarkup = (
                         <div>
                             <SearchField search={this.search}/>
                             <ResultsListing searchResults={this.state.searchResults}/>
                         </div>
-                    );
+                        )}
+                    return renderedMarkup;
+                },
+
+                buildLoadingStateMarkup:function() {
+                    return (
+                        <div>
+                            <SearchField search={this.search}/>
+                            <div>Loading Results...</div>
+                        </div>
+                    )
                 }
             });
 
