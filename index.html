@@ -57,30 +57,39 @@
 
                 render: function() {
                     const { loading } = this.state;
-                    let renderedMarkup;
-
-                    if (loading) {
-                        renderedMarkup = this.buildLoadingStateMarkup();
-                    } else {
-                        renderedMarkup = (
-                        <div>
-                            <SearchField search={this.search}/>
-                            <ResultsListing searchResults={this.state.searchResults}/>
-                        </div>
-                        )}
-                    return renderedMarkup;
-                },
-
-                buildLoadingStateMarkup:function() {
+                    
                     return (
-                        <div>
+                        <div className="app-wrapper">
+                            <HeroWrapper />
                             <SearchField search={this.search}/>
-                            <div>Loading Results...</div>
+                            {this.buildStateMarkup()}
                         </div>
                     )
+                },
+                
+                buildStateMarkup: function() {
+                    return this.state.loading ? this.buildLoadingStateMarkup() : this.buildPopulatedMarkup();
+                },
+                
+                buildLoadingStateMarkup: function() {
+                    return <div>Loading Results...</div>;
+                },
+                
+                buildPopulatedMarkup: function() {
+                    return <ResultsListing searchResults={this.state.searchResults}/>
+
                 }
             });
 
+            function HeroWrapper() {
+                return (
+                    <div className="hero-wrapper">
+                        <img src='https://static-mh.content.disney.io/starwars/assets/navigation/sw_logo_stacked-336c62367939.png'/>
+                        <div>Archives from a long time ago, in a galaxy far, far away...</div>
+                    </div>
+                );
+            }
+            
             SearchField = React.createClass({
                 render: function() {
                     return (
@@ -132,4 +141,11 @@
             ReactDOM.render(<App />,  document.getElementById("content"));
 
         </script>
+
+        <style>
+            .hero-wrapper {
+                background: black;
+                text-align: center;
+            }
+        </style>
 </html>
