@@ -131,11 +131,20 @@
                         return <ResultItem key={result.url} name={result.name} />
                     });
 
-                    return(
-                        <ul>
-                           {resultItems}
-                        </ul>           
-                    );
+                    if (resultItems.length) {
+                        return(
+                            <ul>
+                               {resultItems}
+                            </ul>           
+                        );
+                    } else {
+                        return(
+                            <div>
+                                These are not the results you're looking for... move along.
+                            </div>
+                        );
+                    }
+
                 }
             });
 
