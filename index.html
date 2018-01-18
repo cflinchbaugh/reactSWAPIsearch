@@ -15,7 +15,7 @@
         <script src="https://fb.me/react-dom-0.14.6.js"></script>
         <script src="http://fb.me/JSXTransformer-0.12.1.js"></script>
         <script type="text/jsx">
-            var App,
+            let App,
                 SearchField,
                 ResultsListing,
                 ResultsItem;
@@ -94,33 +94,40 @@
                 render: function() {
                     return (
                         <div className="search-field-wrapper">
-                            <input type="text" ref="query"/>
-                            
-                            <select ref="category">
-                                <option value="planets">Planets</option>
-                                <option value="spaceships">Spaceships</option>
-                                <option value="vehicles">Vehicles</option>
-                                <option value="people">People</option>
-                                <option value="films">Films</option>
-                                <option value="species">Species</option>
-                            </select>
-                            
-                            <input type="submit" onClick={this.createAjax} />
+                            <form onSubmit={this.createAjax}>
+                                <input type="text" ref="query"/>
+                                
+                                <select ref="category">
+                                    <option value="planets">Planets</option>
+                                    <option value="spaceships">Spaceships</option>
+                                    <option value="vehicles">Vehicles</option>
+                                    <option value="people">People</option>
+                                    <option value="films">Films</option>
+                                    <option value="species">Species</option>
+                                </select>
+                                
+                                <button type="submit">
+                                    Search
+                                </button>
+                            </form>
                         </div>
                     )
                 },
-                createAjax: function() {
-                    var query = ReactDOM.findDOMNode(this.refs.query).value,
+                createAjax: function(e) {
+                    let query = ReactDOM.findDOMNode(this.refs.query).value,
                         category = ReactDOM.findDOMNode(this.refs.category).value
-                        url = 'https://swapi.co/api/' + category + '?format=json&search=' + query
-                   
+                        url = 'https://swapi.co/api/' + category + '?format=json&search=' + query;
+                    
+                    // Prevent page refresh
+                    e.preventDefault();
+                    
                     this.props.search(url);
                 }
             });
 
             ResultsListing = React.createClass({
                 render: function(){
-                    var resultItems = this.props.searchResults.map(function(result) {
+                    let resultItems = this.props.searchResults.map(function(result) {
                         return <ResultItem key={result.url} name={result.name} />
                     });
 
@@ -145,6 +152,7 @@
         <style>
             .hero-wrapper {
                 background: black;
+                color: white;
                 text-align: center;
             }
         </style>
