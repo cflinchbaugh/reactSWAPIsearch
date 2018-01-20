@@ -94,7 +94,7 @@
                 render: function() {
                     return (
                         <div className="search-field-wrapper">
-                            <form onSubmit={this.createAjax}>
+                            <form onKeyUp={this.createAjax}>
                                 <input type="text" ref="query"/>
                                 
                                 <select ref="category">
