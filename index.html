@@ -19,8 +19,18 @@
                 SearchField,
                 ResultsListing,
                 ResultsItem;
-            
             App = React.createClass({
+                render: function() {
+                    return (
+                        <div className="app-wrapper">
+                            <HeroWrapper />
+                            <SearchComponent />
+                        </div>
+                    )
+                }
+            });
+            
+            SearchComponent = React.createClass({
                 // componentDidMount() {
                 //     this.search('https://swapi.co/api/people?format=json&search=');
                 // },
@@ -28,15 +38,13 @@
                 getInitialState: function() {
                     return {
                         searchResults: [],
-                        loading: false,
-                        searchValue: 'Nabuu'
+                        loading: false
                     }
                 },
 
                 search: function(URL) {
                     this.setState({
-                        loading: true,
-                        searchValue: ''
+                        loading: true
                     });
 
                     $.ajax({
@@ -59,11 +67,10 @@
 
                 render: function() {
                     const { loading } = this.state;
-
+                    
                     return (
-                        <div className="app-wrapper">
-                            <HeroWrapper />
-                            <SearchField searchValue={this.state.searchValue} search={this.search} />
+                        <div className="search-component-wrapper">
+                            <SearchField search={this.search}/>
                             {this.buildStateMarkup()}
                         </div>
                     )
@@ -92,37 +99,22 @@
                 );
             }
             
-            CategorySelector = React.createClass({
-                getInitialState() {
-                    return {
-                        selectedCategory: 'planets'
-                    }
-                },
-                
-                render: function() {
-                    return (
-                        <select ref="category">
-                            <option value="planets">Planets</option>
-                            <option value="spaceships">Spaceships</option>
-                            <option value="vehicles">Vehicles</option>
-                            <option value="people">People</option>
-                            <option value="films">Films</option>
-                            <option value="species">Species</option>
-                        </select>
-                    )
-                }
-            });
-
             SearchField = React.createClass({
-                
                 render: function() {
                     return (
                         <div className="search-field-wrapper">
-                            <form onKeyUp={this.updateSearchValue}>
-                                <input type="text" ref="query" value={this.props.searchValue} />
-                               
-                                <CategorySelector />
-                                                                
+                            <form onKeyUp={this.createAjax}>
+                                <input type="text" ref="query"/>
+                                
+                                <select ref="category">
+                                    <option value="planets">Planets</option>
+                                    <option value="spaceships">Spaceships</option>
+                                    <option value="vehicles">Vehicles</option>
+                                    <option value="people">People</option>
+                                    <option value="films">Films</option>
+                                    <option value="species">Species</option>
+                                </select>
+                                
                                 <button type="submit">
                                     Search
                                 </button>
@@ -130,11 +122,6 @@
                         </div>
                     )
                 },
-
-                updateSearchValue: function(){
-                    debugger;
-                },
-
                 createAjax: function(e) {
                     let query = ReactDOM.findDOMNode(this.refs.query).value,
                         category = ReactDOM.findDOMNode(this.refs.category).value
