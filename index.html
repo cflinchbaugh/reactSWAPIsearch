@@ -30,16 +30,29 @@
                 }
             });
             
-            SearchComponent = React.createClass({
-                // componentDidMount() {
-                //     this.search('https://swapi.co/api/people?format=json&search=');
-                // },
+            function HeroWrapper() {
+                return (
+                    <div className="hero-wrapper">
+                        <img src='https://static-mh.content.disney.io/starwars/assets/navigation/sw_logo_stacked-336c62367939.png'/>
+                        <div>Archives from a long time ago, in a galaxy far, far away...</div>
+                    </div>
+                );
+            }
 
+            SearchComponent = React.createClass({
                 getInitialState: function() {
                     return {
                         searchResults: [],
-                        loading: false
+                        loading: false,
+                        category: this.updateCategory,
+                        selectedCategory: 'planets'
                     }
+                },
+
+                updateCategory: function(e) {
+                    this.setState({
+                        selectedCategory: e.currentTarget.value
+                    });
                 },
 
                 search: function(URL) {
@@ -67,10 +80,13 @@
 
                 render: function() {
                     const { loading } = this.state;
-                    
                     return (
                         <div className="search-component-wrapper">
-                            <SearchField search={this.search}/>
+                            <SearchField 
+                                category={this.state.category} 
+                                selectedCategory={this.state.selectedCategory}
+                                search={this.search}
+                            />
                             {this.buildStateMarkup()}
                         </div>
                     )
@@ -89,15 +105,6 @@
 
                 }
             });
-
-            function HeroWrapper() {
-                return (
-                    <div className="hero-wrapper">
-                        <img src='https://static-mh.content.disney.io/starwars/assets/navigation/sw_logo_stacked-336c62367939.png'/>
-                        <div>Archives from a long time ago, in a galaxy far, far away...</div>
-                    </div>
-                );
-            }
             
             SearchField = React.createClass({
                 render: function() {
@@ -106,14 +113,9 @@
                             <form onKeyUp={this.createAjax}>
                                 <input type="text" ref="query"/>
                                 
-                                <select ref="category">
-                                    <option value="planets">Planets</option>
-                                    <option value="spaceships">Spaceships</option>
-                                    <option value="vehicles">Vehicles</option>
-                                    <option value="people">People</option>
-                                    <option value="films">Films</option>
-                                    <option value="species">Species</option>
-                                </select>
+                                <CategorySelector 
+                                    category={this.props.category}
+                                />
                                 
                                 <button type="submit">
                                     Search
@@ -124,13 +126,28 @@
                 },
                 createAjax: function(e) {
                     let query = ReactDOM.findDOMNode(this.refs.query).value,
-                        category = ReactDOM.findDOMNode(this.refs.category).value
-                        url = 'https://swapi.co/api/' + category + '?format=json&search=' + query;
+                        url = 'https://swapi.co/api/' + this.props.selectedCategory + '?format=json&search=' + query;
                     
                     // Prevent page refresh
                     e.preventDefault();
                     
                     this.props.search(url);
+                }
+            });
+
+            CategorySelector = React.createClass({
+                render: function() {
+                    return(
+                        <select ref="category" 
+                            onChange={this.props.category}>
+                            <option value="planets">Planets</option>
+                            <option value="starships">Spaceships</option>
+                            <option value="vehicles">Vehicles</option>
+                            <option value="people">People</option>
+                            <option value="films">Films</option>
+                            <option value="species">Species</option>
+                        </select>
+                    )
                 }
             });
 
