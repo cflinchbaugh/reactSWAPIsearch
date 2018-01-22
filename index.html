@@ -111,7 +111,7 @@
                 },
                 
                 buildPopulatedMarkup: function() {
-                    return <ResultsListing searchResults={this.state.searchResults}/>
+                    return <ResultsListing searchResults={this.state.searchResults} selectedCategory={this.state.selectedCategory}/>
 
                 }
             });
@@ -166,11 +166,11 @@
             });
 
             ResultsListing = React.createClass({
+               
                 render: function(){
-                    let resultItems = this.props.searchResults.map(function(result) {
-                        return <ResultItem key={result.url} name={result.name} />
-                    });
-
+                    
+                    let resultItems = this.buildResultItems();
+                    
                     if (resultItems.length) {
                         return(
                             <ul>
@@ -185,6 +185,13 @@
                         );
                     }
 
+                },
+
+                buildResultItems: function() {
+                    return this.props.searchResults.map(function(result) {
+                         console.log(this.props.selectedCategory)
+                         return <ResultItem key={result.url} name={result.name} />
+                    }, this);
                 }
             });
 
