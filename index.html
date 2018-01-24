@@ -131,12 +131,13 @@
                 render: function() {
                     return (
                         <div className="search-field-wrapper">
-                            <form onKeyUp={this.createAjax}>
+                            <form onKeyUp={this.handleKeyUp}>
                                 <input 
                                     type="text" 
                                     ref="query" 
                                     value={this.props.searchValue}
                                     onChange={this.props.updateSearchValue}
+                                    autoFocus="true"
                                 />
                                 
                                 <CategorySelector 
@@ -150,6 +151,16 @@
                         </div>
                     )
                 },
+
+                handleKeyUp: function(e) {
+                        //Standard keys                     //Numpad
+                    if ((e.which < 90 && e.which > 48) || (e.which < 106 && e.which > 95) ) { 
+                        this.createAjax(e);
+                    } 
+
+                    //else it's a special character and we'll ignore it
+                },
+
                 createAjax: function(e) {
                     let url = 'https://swapi.co/api/' + this.props.selectedCategory + '?format=json&search=' + this.props.searchValue;
                     
@@ -201,7 +212,6 @@
 
                 buildResultItems: function() {
                     return this.props.searchResults.map(function(result) {
-                         console.log(this.props.selectedCategory)
                          return <ResultItem itemData={result} key={result.url} selectedCategory={this.props.selectedCategory} />
                     }, this);
                 }
@@ -213,32 +223,26 @@
 
                     switch (this.props.selectedCategory) {
                         case 'planets' :
-                            console.log('planets');
                             resultItemMarkup = this.buildPlanetsMarkup();
                             break;
                             
                         case 'starships' :
-                            console.log('starships');
                             resultItemMarkup = this.buildStarshipsMarkup();
                             break;
                             
                         case 'vehicles' :
-                            console.log('vehicles');
                             resultItemMarkup = this.buildVehiclesMarkup();
                             break;
                             
                         case 'people' :
-                            console.log('people');
                             resultItemMarkup = this.buildPeopleMarkup();
                             break;
                             
                         case 'films' :
-                            console.log('films');
                             resultItemMarkup = this.buildFilmsMarkup();
                             break;
                             
                         case 'species' :
-                            console.log('species');
                             resultItemMarkup = this.buildSpeciesMarkup();
                             break;
                     }
