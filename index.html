@@ -59,6 +59,8 @@
 
                 updateCategory: function(e) {
                     this.setState({
+                        searchResults: [],
+                        searchValue: '',
                         selectedCategory: e.currentTarget.value
                     });
                 },
@@ -111,7 +113,16 @@
                 },
                 
                 buildPopulatedMarkup: function() {
-                    return <ResultsListing searchResults={this.state.searchResults} selectedCategory={this.state.selectedCategory}/>
+                    let markup = (
+                        <div>
+                            These are not the results you're looking for... move along.
+                        </div>);
+
+                    if (this.state.searchResults.length) {
+                        markup = <ResultsListing searchResults={this.state.searchResults} selectedCategory={this.state.selectedCategory}/>
+                    }
+
+                    return markup;
 
                 }
             });
@@ -178,6 +189,7 @@
                             </ul>           
                         );
                     } else {
+                        console.warning("Duplicate HTML, candidate for possible removal");
                         return(
                             <div>
                                 These are not the results you're looking for... move along.
@@ -190,15 +202,197 @@
                 buildResultItems: function() {
                     return this.props.searchResults.map(function(result) {
                          console.log(this.props.selectedCategory)
-                         return <ResultItem key={result.url} name={result.name} />
+                         return <ResultItem itemData={result} key={result.url} selectedCategory={this.props.selectedCategory} />
                     }, this);
                 }
             });
 
             ResultItem = React.createClass({
                 render: function(){
-                    return <li>{this.props.name}</li>;
-                }
+                    let resultItemMarkup;
+
+                    switch (this.props.selectedCategory) {
+                        case 'planets' :
+                            console.log('planets');
+                            resultItemMarkup = this.buildPlanetsMarkup();
+                            break;
+                            
+                        case 'starships' :
+                            console.log('starships');
+                            resultItemMarkup = this.buildStarshipsMarkup();
+                            break;
+                            
+                        case 'vehicles' :
+                            console.log('vehicles');
+                            resultItemMarkup = this.buildVehiclesMarkup();
+                            break;
+                            
+                        case 'people' :
+                            console.log('people');
+                            resultItemMarkup = this.buildPeopleMarkup();
+                            break;
+                            
+                        case 'films' :
+                            console.log('films');
+                            resultItemMarkup = this.buildFilmsMarkup();
+                            break;
+                            
+                        case 'species' :
+                            console.log('species');
+                            resultItemMarkup = this.buildSpeciesMarkup();
+                            break;
+                    }
+
+                    return resultItemMarkup;
+                },
+
+                buildPlanetsMarkup: function() {
+                    return (
+                        <div>
+                            {this.props.itemData.name}
+                            <ul>
+                                <li>Climate: {this.props.itemData.climate}</li>
+                                <li>Created: {this.props.itemData.created}</li>
+                                <li>Diameter: {this.props.itemData.diameter}</li>
+                                <li>Edited: {this.props.itemData.edited}</li>
+                                <li>Films: {this.props.itemData.films}</li>
+                                <li>Gravity: {this.props.itemData.gravity}</li>
+                                <li>Orbital Period: {this.props.itemData.orbital_period}</li>
+                                <li>Population: {this.props.itemData.population}</li>
+                                <li>Residents: {this.props.itemData.residents}</li>
+                                <li>Rotation Period: {this.props.itemData.rotation_period}</li>
+                                <li>Surface Water: {this.props.itemData.surface_water}</li>
+                                <li>Terrain: {this.props.itemData.terrain}</li>
+                                <li>URL: {this.props.itemData.url}</li>
+                            </ul>
+                        </div>
+                    );
+                },
+
+                buildStarshipsMarkup: function() {
+                    return (
+                        <div>
+                            {this.props.itemData.name}
+                            <ul>
+                                <li>MGLT: {this.props.itemData.MGLT}</li>
+                                <li>Cargo Capacity: {this.props.itemData.cargo_capacity}</li>
+                                <li>Consumables: {this.props.itemData.consumables}</li>
+                                <li>Credit Cost: {this.props.itemData.cost_in_credits}</li>
+                                <li>Created: {this.props.itemData.created}</li>
+                                <li>Crew: {this.props.itemData.crew}</li>
+                                <li>Edited: {this.props.itemData.edited}</li>
+                                <li>Films: {this.props.itemData.films}</li>
+                                <li>Hyperdrive Rating: {this.props.itemData.hyperdrive_rating}</li>
+                                <li>Length: {this.props.itemData.length}</li>
+                                <li>Manufacturer: {this.props.itemData.manufacturer}</li>
+                                <li>Max Atmosphering Speed: {this.props.itemData.max_atmosphering_speed}</li>
+                                <li>Model: {this.props.itemData.model}</li>
+                                <li>Passengers: {this.props.itemData.passengers}</li>
+                                <li>Pilots: {this.props.itemData.pilots}</li>
+                                <li>Starship Class: {this.props.itemData.starship_class}</li>
+                                <li>URL: {this.props.itemData.url}</li>
+                            </ul>
+                        </div>
+                    );
+                },
+
+                buildVehiclesMarkup: function() {
+                    return (
+                        <div>
+                            {this.props.itemData.name}
+                            <ul>
+                                <li>Model: {this.props.itemData.model}</li>
+                                <li>Manufacturer: {this.props.itemData.manufacturer}</li>
+                                <li>Credit Cost: {this.props.itemData.cost_in_credits}</li>
+                                <li>Length: {this.props.itemData.length}</li>
+                                <li>Max Atmosphering Speed: {this.props.itemData.max_atmosphering_speed}</li>
+                                <li>Crew: {this.props.itemData.crew}</li>
+                                <li>Passengers: {this.props.itemData.passengers}</li>
+                                <li>Cargo Capacity: {this.props.itemData.cargo_capacity}</li>
+                                <li>Consumables: {this.props.itemData.consumables}</li>
+                                <li>Vehicle Class: {this.props.itemData.vehicle_class}</li>
+                                <li>Pilots: {this.props.itemData.pilots}</li>
+                                <li>Films: {this.props.itemData.films}</li>
+                                <li>Created: {this.props.itemData.created}</li>
+                                <li>Edited: {this.props.itemData.edited}</li>
+                                <li>URL: {this.props.itemData.url}</li>"
+                            </ul>
+                        </div>
+                    );
+                },
+
+                buildPeopleMarkup: function() {
+                    return (
+                        <div>
+                            {this.props.itemData.name}
+                            <ul>
+                                <li>Birth Year: {this.props.itemData.birth_year}</li>
+                                <li>Created: {this.props.itemData.created}</li>
+                                <li>Edited: {this.props.itemData.edited}</li>
+                                <li>Eye Color: {this.props.itemData.eye_color}</li>
+                                <li>Films: {this.props.itemData.films}</li>
+                                <li>Gender: {this.props.itemData.gender}</li>
+                                <li>Hair Color: {this.props.itemData.hair_color}</li>
+                                <li>Height: {this.props.itemData.height}</li>
+                                <li>Homeworld: {this.props.itemData.homeworld}</li>
+                                <li>Mass: {this.props.itemData.mass}</li>
+                                <li>Skin Color: {this.props.itemData.skin_color}</li>
+                                <li>Species: {this.props.itemData.species}</li>
+                                <li>Starships: {this.props.itemData.starships}</li>
+                                <li>URL: {this.props.itemData.url}</li>
+                                <li>Vehicles: {this.props.itemData.vehicles}</li>
+                            </ul>
+                        </div>
+                    );
+                },
+
+                buildFilmsMarkup: function() {
+                    return (
+                        <div>
+                            Star Wars Episode {this.props.itemData.episode_id}
+                            {this.props.itemData.title}
+                            <ul>
+                                <li>Characters: {this.props.itemData.characters}</li>
+                                <li>Created: {this.props.itemData.created}</li>
+                                <li>Director: {this.props.itemData.director}</li>
+                                <li>Edited: {this.props.itemData.edited}</li>
+                                <li>Opening Crawl: {this.props.itemData.opening_crawl}</li>
+                                <li>Planets: {this.props.itemData.planets}</li>
+                                <li>Producer: {this.props.itemData.producer}</li>
+                                <li>Release Date: {this.props.itemData.release_date}</li>
+                                <li>Species: {this.props.itemData.species}</li>
+                                <li>Starships: {this.props.itemData.starships}</li>
+                                <li>URL: {this.props.itemData.url}</li>
+                                <li>Vehicles{this.props.itemData.vehicles}</li>
+                            </ul>
+                        </div>
+                    );
+                },
+
+                buildSpeciesMarkup: function() {
+                    return (
+                        <div>
+                            {this.props.itemData.name}
+                            <ul>
+                                <li>Average Height: {this.props.itemData.average_height}</li>
+                                <li>Average Lifespan: {this.props.itemData.average_lifespan}</li>
+                                <li>Classification: {this.props.itemData.classification}</li>
+                                <li>Created: {this.props.itemData.created}</li>
+                                <li>Designation: {this.props.itemData.designation}</li>
+                                <li>Edited: {this.props.itemData.edited}</li>
+                                <li>Eye Colors: {this.props.itemData.eye_colors}</li>
+                                <li>Films: {this.props.itemData.films}</li>
+                                <li>Hair Color: {this.props.itemData.hair_colors}</li>
+                                <li>Homeworld: {this.props.itemData.homeworld}</li>
+                                <li>Language: {this.props.itemData.language}</li>
+                                <li>People: {this.props.itemData.people}</li>
+                                <li>Skin Colors: {this.props.itemData.skin_colors}</li>
+                                <li>URL: {this.props.itemData.url}</li>
+                            </ul>
+                        </div>
+                    );
+                },
+
             });
 
             ReactDOM.render(<App />,  document.getElementById("content"));
