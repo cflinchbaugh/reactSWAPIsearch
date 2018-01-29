@@ -18,7 +18,7 @@
             let App,
                 SearchComponent,
                 SearchField,
-                CategorySelector,
+                OptionSelector,
                 ResultsListing,
                 ResultsItem;
 
@@ -49,9 +49,32 @@
                         loading: false,
                         searchValue: '',
                         updateSearchValue: this.updateSearchValue,
+                        options: this.populateOptions(),
                         category: this.updateCategory,
                         selectedCategory: 'planets'
                     }
+                },
+
+                populateOptions: function() {
+                    return [{
+                        value: "planets",
+                        label: "Planets"
+                    }, { 
+                        value: "starships", 
+                        label: "Spaceships"
+                    }, { 
+                        value: "vehicles", 
+                        label: "Vehicles"
+                    }, { 
+                        value: "people", 
+                        label: "People"
+                    }, { 
+                        value: "films", 
+                        label: "Films"
+                    }, { 
+                        value: "species", 
+                        label: "Species"
+                    }]
                 },
 
                 updateSearchValue: function(e) {
@@ -90,7 +113,9 @@
                 },
 
                 render: function() {
+
                     const { loading } = this.state;
+
                     return (
                         <div className="search-component-wrapper">
                             <SearchField 
@@ -104,7 +129,8 @@
                                 <div id="category-label" className="label">
                                     Category
                                 </div>
-                                <CategorySelector 
+                                <OptionSelector 
+                                    options={this.state.options}
                                     category={this.state.category}
                                     selectedCategory={this.state.selectedCategory}
                                 />
@@ -185,19 +211,27 @@
                 }
             });
 
-            CategorySelector = React.createClass({
+            OptionSelector = React.createClass({
                 render: function() {
+
+                    let selectorItems = this.buildSelectorItems();
                     return(
                         <select ref="category" 
                             onChange={this.props.category}>
-                            <option value="planets">Planets</option>
-                            <option value="starships">Spaceships</option>
-                            <option value="vehicles">Vehicles</option>
-                            <option value="people">People</option>
-                            <option value="films">Films</option>
-                            <option value="species">Species</option>
-                        </select>
+                            {selectorItems}
+                         </select>
+
                     )
+                },
+
+                buildSelectorItems: function() {
+                    return this.props.options.map(function(result) {
+                        return (
+                            <option value={result.value} key={result.value}>
+                                {result.label}
+                            </option>
+                        )
+                   }, this);
                 }
             });
 
