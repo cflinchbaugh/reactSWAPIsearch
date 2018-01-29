@@ -14,6 +14,7 @@
         <script src="https://fb.me/react-0.14.6.js"></script>
         <script src="https://fb.me/react-dom-0.14.6.js"></script>
         <script src="http://fb.me/JSXTransformer-0.12.1.js"></script>
+        
         <script type="text/jsx">
             let App,
                 SearchComponent,
@@ -131,8 +132,7 @@
                                 </div>
                                 <OptionSelector 
                                     options={this.state.options}
-                                    category={this.state.category}
-                                    selectedCategory={this.state.selectedCategory}
+                                    changeHandler={this.state.category}
                                 />
                             </div>
 
@@ -213,14 +213,12 @@
 
             OptionSelector = React.createClass({
                 render: function() {
-
                     let selectorItems = this.buildSelectorItems();
+
                     return(
-                        <select ref="category" 
-                            onChange={this.props.category}>
+                        <select onChange={this.props.changeHandler}>
                             {selectorItems}
                          </select>
-
                     )
                 },
 
