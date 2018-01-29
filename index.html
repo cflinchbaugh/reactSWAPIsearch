@@ -132,10 +132,17 @@
             });
             
             SearchField = React.createClass({
+                handleSubmit: function(e) {
+                    this.createAjax(e);
+
+                    // Prevent page refresh
+                    e.preventDefault();
+                },
+
                 render: function() {
                     return (
                         <div className="search-field-wrapper">
-                            <form onKeyUp={this.handleKeyUp}>
+                            <form onKeyUp={this.handleKeyUp} onSubmit={this.handleSubmit}>
                                 <input 
                                     type="text" 
                                     ref="query" 
@@ -143,8 +150,6 @@
                                     onChange={this.props.updateSearchValue}
                                     autoFocus="true"
                                 />
-                                
-                                
                                 
                                 <button type="submit">
                                     Search
@@ -165,9 +170,6 @@
 
                 createAjax: function(e) {
                     let url = 'https://swapi.co/api/' + this.props.selectedCategory + '?format=json&search=' + this.props.searchValue;
-                    
-                    // Prevent page refresh
-                    e.preventDefault();
                     
                     this.props.search(url);
                 }
