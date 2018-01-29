@@ -16,9 +16,12 @@
         <script src="http://fb.me/JSXTransformer-0.12.1.js"></script>
         <script type="text/jsx">
             let App,
+                SearchComponent,
                 SearchField,
+                CategorySelector,
                 ResultsListing,
                 ResultsItem;
+
             App = React.createClass({
                 render: function() {
                     return (
@@ -59,8 +62,6 @@
 
                 updateCategory: function(e) {
                     this.setState({
-                        searchResults: [],
-                        searchValue: '',
                         selectedCategory: e.currentTarget.value
                     });
                 },
@@ -95,9 +96,12 @@
                             <SearchField 
                                 searchValue={this.state.searchValue}
                                 updateSearchValue={this.state.updateSearchValue}
-                                category={this.state.category} 
-                                selectedCategory={this.state.selectedCategory}
                                 search={this.search}
+                                selectedCategory={this.state.selectedCategory}
+                            />
+                            <CategorySelector 
+                                category={this.state.category}
+                                selectedCategory={this.state.selectedCategory}
                             />
                             {this.buildStateMarkup()}
                         </div>
@@ -140,9 +144,7 @@
                                     autoFocus="true"
                                 />
                                 
-                                <CategorySelector 
-                                    category={this.props.category}
-                                />
+                                
                                 
                                 <button type="submit">
                                     Search
@@ -218,6 +220,11 @@
             });
 
             ResultItem = React.createClass({
+                shouldComponentUpdate: function(nextProps, nextState) {
+                    // Don't re-render just because the selectedCategory changed- we only want to re-render on keyup or button press
+                    return false;
+                },
+
                 render: function(){
                     let resultItemMarkup;
 
