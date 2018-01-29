@@ -99,11 +99,20 @@
                                 search={this.search}
                                 selectedCategory={this.state.selectedCategory}
                             />
-                            <CategorySelector 
-                                category={this.state.category}
-                                selectedCategory={this.state.selectedCategory}
-                            />
-                            {this.buildStateMarkup()}
+
+                            <div className="selector-wrapper">
+                                <div id="category-label" className="label">
+                                    Category
+                                </div>
+                                <CategorySelector 
+                                    category={this.state.category}
+                                    selectedCategory={this.state.selectedCategory}
+                                />
+                            </div>
+
+                            <div className="results-wrapper">
+                                {this.buildStateMarkup()}
+                            </div>
                         </div>
                     )
                 },
@@ -149,6 +158,7 @@
                                     value={this.props.searchValue}
                                     onChange={this.props.updateSearchValue}
                                     autoFocus="true"
+                                    placeholder="Search the Archives..."
                                 />
                                 
                                 <button type="submit">
