@@ -160,10 +160,17 @@
                         listingItem = ResultItem;
 
                     if (this.state.searchResults.length) {
+                        let itemData = {
+                            itemData: this.state.searchResults,
+                            additionalData: {
+                                selectedCategory: this.state.selectedCategory
+                            }
+                        }
+
                         markup = <ListingComponent 
                             listingItem={listingItem}
-                            listingItemData={this.state.searchResults} 
-                            selectedCategory={this.state.selectedCategory}/>
+                            data={itemData} 
+                        />
                     }
 
                     return markup;
@@ -261,11 +268,10 @@
                 },
 
                 buildListingItems: function() {
-                    return this.props.listingItemData.map(function(itemData, idx) {
-                        
+                    return this.props.data.itemData.map(function(itemData, idx) {
                         return React.createElement(this.props.listingItem, { 
                             itemData: itemData,
-                            selectedCategory: this.props.selectedCategory,
+                            additionalData: this.props.data.additionalData,
                             key: idx
                         });
 
@@ -282,7 +288,7 @@
                 render: function(){
                     let resultItemMarkup;
 
-                    switch (this.props.selectedCategory) {
+                    switch (this.props.additionalData.selectedCategory) {
                         case 'planets' :
                             resultItemMarkup = this.buildPlanetsMarkup();
                             break;
