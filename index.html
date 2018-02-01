@@ -21,7 +21,7 @@
                 SearchComponent,
                 SearchField,
                 OptionSelector,
-                ResultsListing,
+                ListingComponent,
                 ResultsItem;
 
             App = React.createClass({
@@ -156,10 +156,21 @@
                     let markup = (
                         <div>
                             These are not the results you're looking for... move along.
-                        </div>);
+                        </div>),
+                        listingItem = ResultItem;
 
                     if (this.state.searchResults.length) {
-                        markup = <ResultsListing searchResults={this.state.searchResults} selectedCategory={this.state.selectedCategory}/>
+                        let itemData = {
+                            itemData: this.state.searchResults,
+                            additionalData: {
+                                selectedCategory: this.state.selectedCategory
+                            }
+                        }
+
+                        markup = <ListingComponent 
+                            listingItem={listingItem}
+                            data={itemData} 
+                        />
                     }
 
                     return markup;
@@ -234,16 +245,15 @@
                 }
             });
 
-            ResultsListing = React.createClass({
+            ListingComponent = React.createClass({
                
-                render: function(){
+                render: function(){                    
+                    let listingItems = this.buildListingItems();
                     
-                    let resultItems = this.buildResultItems();
-                    
-                    if (resultItems.length) {
+                    if (listingItems.length) {
                         return(
                             <ul>
-                               {resultItems}
+                               {listingItems}
                             </ul>           
                         );
                     } else {
@@ -257,9 +267,14 @@
 
                 },
 
-                buildResultItems: function() {
-                    return this.props.searchResults.map(function(result) {
-                         return <ResultItem itemData={result} key={result.url} selectedCategory={this.props.selectedCategory} />
+                buildListingItems: function() {
+                    return this.props.data.itemData.map(function(itemData, idx) {
+                        return React.createElement(this.props.listingItem, { 
+                            itemData: itemData,
+                            additionalData: this.props.data.additionalData,
+                            key: idx
+                        });
+
                     }, this);
                 }
             });
@@ -273,7 +288,7 @@
                 render: function(){
                     let resultItemMarkup;
 
-                    switch (this.props.selectedCategory) {
+                    switch (this.props.additionalData.selectedCategory) {
                         case 'planets' :
                             resultItemMarkup = this.buildPlanetsMarkup();
                             break;
