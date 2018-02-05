@@ -191,6 +191,7 @@
                         <div className="search-field-wrapper">
                             <form onKeyUp={this.handleKeyUp} onSubmit={this.handleSubmit}>
                                 <input 
+                                    className="search-input"
                                     type="text" 
                                     ref="query" 
                                     value={this.props.searchValue}
@@ -199,7 +200,9 @@
                                     placeholder="Search the Archives..."
                                 />
                                 
-                                <button type="submit">
+                                <button 
+                                    className="search-button"
+                                    type="submit">
                                     Search
                                 </button>
                             </form>
@@ -471,10 +474,44 @@
         </script>
 
         <style>
-            .hero-wrapper {
-                background: black;
+            html {
+                background: #000 url(https://cdn.pixabay.com/photo/2016/09/08/12/00/starry-sky-1654074_960_720.jpg) repeat top center;
+                height: 100%;
                 color: white;
-                text-align: center;
             }
+
+            .app-wrapper {
+                margin: 50px;
+            }
+            
+            .hero-wrapper,
+            .search-wrapper,
+            .selector-wrapper,
+            .results-wrapper {
+                margin-bottom: 20px;
+            }
+
+            .hero-wrapper {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .search-input {
+                width: 80%;
+                border-top: none;
+                border-left: none;
+                border-right: none;
+                background: transparent;
+                color: white;
+                transition: all 0.5s;
+            }
+
+            .search-input:focus {
+                outline: none;
+                border-bottom: solid 2px deepskyblue;
+                transition: all 0.5s;
+            }
+
+            
         </style>
 </html>
