@@ -121,21 +121,23 @@
 
                     return (
                         <div className="search-component-wrapper">
-                            <SearchField 
-                                searchValue={this.state.searchValue}
-                                updateSearchValue={this.state.updateSearchValue}
-                                search={this.search}
-                                selectedCategory={this.state.selectedCategory}
-                            />
-
-                            <div className="selector-wrapper">
-                                <div id="category-label" className="label">
-                                    Category
-                                </div>
-                                <OptionSelector 
-                                    options={this.state.options}
-                                    changeHandler={this.state.category}
+                            <div className="search-container">
+                                <SearchField 
+                                    searchValue={this.state.searchValue}
+                                    updateSearchValue={this.state.updateSearchValue}
+                                    search={this.search}
+                                    selectedCategory={this.state.selectedCategory}
                                 />
+
+                                <div className="selector-wrapper">
+                                    <div id="category-label" className="label">
+                                        Category
+                                    </div>
+                                    <OptionSelector 
+                                        options={this.state.options}
+                                        changeHandler={this.state.category}
+                                    />
+                                </div>
                             </div>
 
                             <div className="results-wrapper">

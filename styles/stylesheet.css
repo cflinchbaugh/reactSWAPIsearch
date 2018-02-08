@@ -16,8 +16,15 @@ html {
     margin-bottom: 30px;
 }
 
+.search-container {
+    border: solid 1px;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
 .search-input {
-    width: 80%;
+    width: calc(100% - 60px);
     border-top: none;
     border-left: none;
     border-right: none;
