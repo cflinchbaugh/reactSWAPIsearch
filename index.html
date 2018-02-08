@@ -475,13 +475,9 @@
 
         <style>
             html {
-                background: #000 url(https://cdn.pixabay.com/photo/2016/09/08/12/00/starry-sky-1654074_960_720.jpg) repeat top center;
+                background: #000 url('images/starry-sky-1654074_960_720.jpg') repeat top center;
                 height: 100%;
                 color: white;
-            }
-
-            .app-wrapper {
-                margin: 50px;
             }
             
             .hero-wrapper,
@@ -512,6 +508,10 @@
                 transition: all 0.5s;
             }
 
-            
+            @media(min-width: 768px) {
+                .app-wrapper {
+                    margin: 50px;
+                }
+            }
         </style>
 </html>
