@@ -23,7 +23,8 @@
                 SearchField,
                 OptionSelector,
                 ListingComponent,
-                ResultsItem;
+                ResultItem,
+                PaginationComponent;
 
             App = React.createClass({
                 render: function() {
@@ -54,7 +55,9 @@
                         updateSearchValue: this.updateSearchValue,
                         options: this.populateOptions(),
                         category: this.updateCategory,
-                        selectedCategory: 'planets'
+                        selectedCategory: 'planets',
+                        nextPage: null,
+                        previousPage: null
                     }
                 },
 
@@ -92,7 +95,7 @@
                     });
                 },
 
-                search: function(URL) {
+                getAPI: function(URL) {
                     this.setState({
                         loading: true
                     });
@@ -102,17 +105,26 @@
                         dataType: 'json',
                         url: URL,
                         success: function(response) {
-                            this.showResults(response);
+                            this._processResponse(response);
                         }.bind(this)
 
                     });
                 },
 
-                showResults: function(response) {
+                _processResponse: function(response) {
                     this.setState({
                         loading: false,
-                        searchResults: response.results
+                        searchResults: response.results,
+                        next: response.next,
+                        previous: response.previous
                     });
+
+                },
+
+                handlePaginationClick: function(e) {
+                    e.preventDefault();
+
+                    this.getAPI(e.currentTarget.href);
                 },
 
                 render: function() {
@@ -125,7 +137,7 @@
                                 <SearchField 
                                     searchValue={this.state.searchValue}
                                     updateSearchValue={this.state.updateSearchValue}
-                                    search={this.search}
+                                    search={this.getAPI}
                                     selectedCategory={this.state.selectedCategory}
                                 />
 
@@ -142,6 +154,14 @@
 
                             <div className="results-wrapper">
                                 {this.buildStateMarkup()}
+                            </div>
+
+                            <div className="pagination-wrapper">
+                                <PaginationComponent
+                                    next={this.state.next}
+                                    previous={this.state.previous}
+                                    handlePaginationClick={this.handlePaginationClick}
+                                />
                             </div>
                         </div>
                     )
@@ -470,6 +490,54 @@
                     );
                 },
 
+            });
+
+            PaginationComponent = React.createClass({
+                render: function() {
+                    let paginationMarkup = this.buildPaginationMarkup();
+                    
+                    return (
+                        <div className="pagination-wrapper">
+                            {paginationMarkup}
+                        </div>
+                    )
+                },
+
+                buildPaginationMarkup: function() {
+                    let markup = '',
+                        showBoth = false;
+
+                    if (this.props.next && this.props.previous) {
+                        showBoth = true;
+                    }
+
+                    console.log(showBoth);
+
+                    if (this.props.next && this.props.previous) {
+                        markup = (
+                            <div className="pagination-wrapper">
+                                <a href={this.props.previous} onClick={this.props.handlePaginationClick}>Previous</a>
+                                <a href={this.props.next} onClick={this.props.handlePaginationClick}>Next</a>
+                                </div>
+                        );
+                    }
+                    else if (this.props.next) {
+                        markup = (
+                            <div className="pagination-wrapper">
+                                <a href={this.props.next} onClick={this.props.handlePaginationClick}>Next</a>
+                            </div>
+                        );
+                    }
+                    else if (this.props.previous) {
+                        markup = (
+                            <div className="pagination-wrapper">
+                                <a href={this.props.previous} onClick={this.props.handlePaginationClick}>Previous</a>
+                            </div>
+                        );
+                    }
+
+                    return markup;
+                }
             });
 
             ReactDOM.render(<App />,  document.getElementById("content"));
