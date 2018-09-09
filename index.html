@@ -96,9 +96,7 @@
                 },
 
                 getAPI: function(URL) {
-                    this.setState({
-                        loading: true
-                    });
+                    this._setLoadingState(true);
 
                     $.ajax({
                         type: "GET",
@@ -111,6 +109,13 @@
                     });
                 },
 
+                _setLoadingState: function(isLoading) {
+                    this.setState({
+                        loading: isLoading
+                    });
+
+                },
+                
                 _processResponse: function(response) {
                     this.setState({
                         loading: false,
